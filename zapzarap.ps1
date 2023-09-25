@@ -112,6 +112,15 @@ if ($Medium) {
     Write-Host "Event Logs copied to temporary directory: $tempEventLogDir"
 }
 
+if ($High) {
+    if (-not (Test-Path -Path $tempEventLogDir -PathType Container)) {
+        New-Item -Path $tempEventLogDir -ItemType Directory | Out-Null
+    }
+    
+    Copy-Item -Path "C:\Windows\System32\winevt\Logs\*" -Destination $tempEventLogDir -Recurse -Force
+    Write-Host "Event Logs copied to temporary directory: $tempEventLogDir"
+}
+
 # Zip_Files
 function ZipFolders($sourceFolders, $destinationFolder) {
     foreach ($sourceFolder in $sourceFolders) {
