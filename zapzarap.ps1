@@ -40,9 +40,9 @@ function ZipFolders($sourceFolders, $destinationFolder) {
 
         if (Test-Path -Path $sourceFolder -PathType Container) {
             Compress-Archive -Path $sourceFolder -DestinationPath (Join-Path -Path $destinationFolder -ChildPath $zipFileName) -Force
-            Write-Host "Das Archiv wurde erfolgreich erstellt: $zipFileName"
+            Write-Host "The archive was successfully created: $zipFileName"
         } else {
-            Write-Host "Der angegebene Quellordner existiert nicht: $sourceFolder"
+            Write-Host "The specified source folder does not exist: $sourceFolder"
         }
     }
 }
