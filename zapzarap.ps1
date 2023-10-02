@@ -22,7 +22,7 @@ $lightSourceFolders = @(
     (Join-Path -Path $env:USERPROFILE -ChildPath "\AppData\Roaming\Microsoft\Windows\Recent\AutomaticDestinations"), # JumpLists
     (Join-Path -Path $env:USERPROFILE -ChildPath "\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine"), # PowerShell History
     (Join-Path -Path $env:USERPROFILE -ChildPath "\AppData\Local\Microsoft\Terminal Server Client\Cache") # RDP Bitmap Cache
-    (Join-Path -Path $env:USERPROFILE -ChildPath "\AppData\Local\Google\Chrome\User Data\Default") # Google Chrom History
+    (Join-Path -Path $env:USERPROFILE -ChildPath "\AppData\Local\Google\Chrome\User Data\") # Google Chrom History
     (Join-Path -Path $env:USERPROFILE -ChildPath "\AppData\Local\Microsoft\Edge\User Data\Default") # Edge Browser History
     (Join-Path -Path $env:USERPROFILE -ChildPath "\AppData\Local\Mozilla\Firefox\Profiles") # FireFox Browser History  
 )
@@ -38,7 +38,7 @@ $highSourceFolders = @(
     (Join-Path -Path $env:USERPROFILE -ChildPath "\AppData\Roaming\Microsoft\Windows\Recent\AutomaticDestinations"), # JumpLists
     (Join-Path -Path $env:USERPROFILE -ChildPath "\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine"), # PowerShell History
     (Join-Path -Path $env:USERPROFILE -ChildPath "\AppData\Local\Microsoft\Terminal Server Client\Cache"), # RDP Bitmap Cache
-    (Join-Path -Path $env:USERPROFILE -ChildPath "\AppData\Local\Google\Chrome\User Data\Default") # Google Chrom History
+    (Join-Path -Path $env:USERPROFILE -ChildPath "\AppData\Local\Google\Chrome\User Data\") # Google Chrom History
     (Join-Path -Path $env:USERPROFILE -ChildPath "\AppData\Local\Microsoft\Edge\User Data\Default") # Edge Browser History
     (Join-Path -Path $env:USERPROFILE -ChildPath "\AppData\Local\Mozilla\Firefox\Profiles") # FireFox Browser History 
     (Join-Path -Path $env:SystemRoot -ChildPath "\appcompat\pca"), ##  List of.exe files
@@ -57,6 +57,24 @@ if ($Medium) {
     Write-Host "Event Logs copied to temporary directory: $tempEventLogDir"
 }
 
+if ($Medium) {
+    if (-not (Test-Path -Path $tempPrefetch -PathType Container)) {
+        New-Item -Path $tempPrefetch -ItemType Directory | Out-Null
+    }
+    
+    Copy-Item -Path "C:\Windows\Prefetch" -Destination $PrefetchCopyDir -Recurse -Force
+    Write-Host "Prefetch files copied to temporary directory: $tempPrefetch"
+}
+
+if ($High) {
+    if (-not (Test-Path -Path $tempEventLogDir -PathType Container)) {
+        New-Item -Path $tempEventLogDir -ItemType Directory | Out-Null
+    }
+    
+    Copy-Item -Path "C:\Windows\System32\winevt\Logs\*" -Destination $tempEventLogDir -Recurse -Force
+    Write-Host "Event Logs copied to temporary directory: $tempEventLogDir"
+}
+
 if ($High) {
     if (-not (Test-Path -Path $tempPrefetch -PathType Container)) {
         New-Item -Path $tempPrefetch -ItemType Directory | Out-Null
@@ -65,6 +83,7 @@ if ($High) {
     Copy-Item -Path "C:\Windows\Prefetch" -Destination $PrefetchCopyDir -Recurse -Force
     Write-Host "Prefetch files copied to temporary directory: $tempPrefetch"
 }
+
 
 # Zip_Files
 function ZipFolders($sourceFolders, $destinationFolder) {
@@ -100,5 +119,8 @@ if ($Medium) {
     Remove-Item -Path $tempEventLogDir -Force -Recurse
     Write-Host "Temp Windows Event Logs directory removed: $tempEventLogDir"
 }
-
+if ($High) {
+    Remove-Item -Path $tempEventLogDir -Force -Recurse
+    Write-Host "Temp Windows Event Logs directory removed: $tempEventLogDir"
+}
 
