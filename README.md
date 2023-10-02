@@ -9,5 +9,7 @@ The script should enable cyber security analysts to easily collect various artif
 * Start PowerShell as administrator
 * Run as Admin: .\zapzerap.ps1 -[Light, Medium, High]
 
-# Future enhancements
-Implementation of the scp function to be able to send data via ssh
+# Future improvements
+* Implementation of the scp function to be able to send data via ssh
+* Solve Issue with archiving Edge Browser History and "High" parameter
+* Improve the performance of the archiving process
