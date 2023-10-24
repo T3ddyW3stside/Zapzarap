@@ -123,4 +123,11 @@ if ($High) {
     Remove-Item -Path $tempEventLogDir -Force -Recurse
     Write-Host "Temp Windows Event Logs directory removed: $tempEventLogDir"
 }
+<#
+$sourceFile = "C:\path\src\archiv.zip"
+$remoteServer = "ZielServer"
+$remoteUser = "Benutzer"
+$remotePath = "/dest/path/Server/"
 
+scp $sourceFile "$remoteUser@$remoteServer:$remotePath"
+#>
